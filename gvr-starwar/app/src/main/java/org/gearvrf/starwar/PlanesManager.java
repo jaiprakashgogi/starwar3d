@@ -22,6 +22,21 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 
 public class PlanesManager extends GVRScript implements PositionListener {
+	
+	private Planes mPickedObject = null;
+	private IPickEvents mPickHandler;
+	private GVRScene mScene;
+
+	private static final String TAG = "PlanesManager";
+
+	private SampleActivity mActivity;
+
+	ArrayList<Planes> planeArray;
+	private int count = 5;
+	Score mScore;
+	GVRContext mGVRContext;
+
+	private GVRTextViewSceneObject scorecard;
 
 	public class PickHandler implements IPickEvents {
 		public void onEnter(GVRSceneObject sceneObj, GVRPicker.GVRPickedObject pickInfo) {
@@ -47,21 +62,6 @@ public class PlanesManager extends GVRScript implements PositionListener {
 		public void onInside(GVRSceneObject sceneObj, GVRPicker.GVRPickedObject pickInfo) {
 		}
 	}
-
-	private Planes mPickedObject = null;
-	private IPickEvents mPickHandler;
-	private GVRScene mScene;
-
-	private static final String TAG = "PlanesManager";
-
-	private SampleActivity mActivity;
-
-	ArrayList<Planes> planeArray;
-	private int count = 5;
-	Score mScore;
-	GVRContext mGVRContext;
-
-	private GVRTextViewSceneObject scorecard;
 
 	// Character
 	Character mPlayer = new Character();
@@ -132,8 +132,9 @@ public class PlanesManager extends GVRScript implements PositionListener {
 	public void onPlaneShot(int index) {
 		mScore.updatePlaneShot(index);
 		Planes hitPlane = planeArray.get(index);
+		hitPlane.setVisible(false);
 		try {
-			hitPlane.finalize();
+			//hitPlane.finalize();
 			Planes myPlane = new Planes(mGVRContext, index);
 			myPlane.setPositionListener(this);
 			planeArray.add(index, myPlane);
@@ -147,6 +148,7 @@ public class PlanesManager extends GVRScript implements PositionListener {
 		Log.i(TAG, "onPlaneHit: " + index);
 		mScore.updatePlaneHit(index);
 		Planes hitPlane = planeArray.get(index);
+		hitPlane.setVisible(false);
 		try {
 			// hitPlane.finalize();
 			Planes myPlane = new Planes(mGVRContext, index);

@@ -119,6 +119,10 @@ public class Planes extends GVRSceneObject implements GVRDrawFrameListener {
 	protected void finalize() throws Throwable {
 		super.finalize();
 	}
+	
+	public void setVisible(boolean _isVisible) {
+		isVisible = _isVisible;
+	}
 
 	void updateTargetPosition(double x, double y, double z) {
 		

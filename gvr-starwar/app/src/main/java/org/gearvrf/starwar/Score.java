@@ -33,4 +33,12 @@ public class Score {
     public void updatePlaneHit(int index) {
         hit_count = hit_count + 1;
     }
+
+	public int getPlaneShot() {
+		return shoot_count;
+	}
+
+	public int getPlaneHit() {
+		return hit_count;
+	}
 }

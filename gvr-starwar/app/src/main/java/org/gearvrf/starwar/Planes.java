@@ -48,12 +48,12 @@ public class Planes extends GVRSceneObject implements GVRDrawFrameListener {
 
 	public Planes(GVRContext _gvrContext, int _id) throws IOException {
 		//choose a random mesh
-		/*super(_gvrContext, _gvrContext.loadMesh(
-				new GVRAndroidResource(_gvrContext.getContext(), "obj" + new Random().nextInt(9) + 1 + ".obj")), 
+		/*this(_gvrContext, _gvrContext.loadMesh(
+				new GVRAndroidResource(_gvrContext.getContext(), "obj5.obj")), 
 				_gvrContext.loadTexture(new GVRAndroidResource(_gvrContext
-                        .getContext(), "tex" + new Random().nextInt(9) + 1 + ".jpg")));*/
+                        .getContext(), "tex1.jpg")));*/
 		this(_gvrContext, _gvrContext.loadMesh(
-				new GVRAndroidResource(_gvrContext.getContext(), "obj" + new Random().nextInt(4) + ".obj")), 
+				new GVRAndroidResource(_gvrContext.getContext(), "obj" + new Random().nextInt(5) + ".obj")), 
 				_gvrContext.loadTexture(new GVRAndroidResource(_gvrContext
                         .getContext(), "tex1.jpg")));
 		this.id = _id;

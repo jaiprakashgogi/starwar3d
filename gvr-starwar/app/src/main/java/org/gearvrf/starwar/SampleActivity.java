@@ -71,6 +71,12 @@ public class SampleActivity extends GVRActivity {
     }
 
     @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        pm.onTouchEvent(event);
+        return super.onTouchEvent(event);
+    }    
+    
+    @Override
     public void onPause() {
         super.onPause();
         pm.onPause();

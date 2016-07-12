@@ -9,6 +9,7 @@ import org.gearvrf.GVRDrawFrameListener;
 import org.gearvrf.GVRMesh;
 import org.gearvrf.GVRScene;
 import org.gearvrf.GVRSceneObject;
+import org.gearvrf.GVRSphereCollider;
 import org.gearvrf.GVRTexture;
 
 import android.util.Log;
@@ -21,7 +22,7 @@ public class Planes extends GVRSceneObject implements GVRDrawFrameListener {
 	private float scale;
 	private boolean isVisible;
 	private GVRScene scene;
-	private int id;
+	public int id;
 	public static final String TAG = "Planes";
 	private PositionListener mPositionListener;
 
@@ -37,6 +38,7 @@ public class Planes extends GVRSceneObject implements GVRDrawFrameListener {
 		// choosing a random position
 		UniformHemisphereSampler();
 		scene.addSceneObject(this);
+		this.attachComponent(new GVRSphereCollider(_gvrContext));
 		//Log.i(TAG, "Constructor 2");
 	}
 

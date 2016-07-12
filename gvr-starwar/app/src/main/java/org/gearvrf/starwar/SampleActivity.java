@@ -16,13 +16,23 @@
 
 package org.gearvrf.starwar;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.graphics.ImageFormat;
+import android.hardware.Camera;
+import android.hardware.Camera.Parameters;
+import android.hardware.Camera.PreviewCallback;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.util.Log;
 
 import org.gearvrf.GVRActivity;
 
 public class SampleActivity extends GVRActivity {
+	private static final String TAG = "SampleActivity";
+    private Camera camera;
+    private PlanesManager pm;
 	protected GamepadInput mGamepad;
 
 	public SampleActivity() {
@@ -32,7 +42,9 @@ public class SampleActivity extends GVRActivity {
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        setScript(new PlanesManager(this), "gvr.xml");
+		createCameraView();
+		pm = new PlanesManager(this);
+        setScript(pm, "gvr.xml");
     }
 
     @Override
@@ -53,4 +65,25 @@ public class SampleActivity extends GVRActivity {
 
         return super.dispatchKeyEvent(event);
     }
+
+	private static final String TAG = "SampleActivity";
+    private Camera camera;
+    private PlanesManager pm;
+
+    Camera getCamera() {
+        return camera;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        pm.onPause();
+        if (camera != null) {
+            camera.setPreviewCallback(null);
+            camera.stopPreview();
+            camera.release();
+            camera = null;
+        }
+    }
+
 }

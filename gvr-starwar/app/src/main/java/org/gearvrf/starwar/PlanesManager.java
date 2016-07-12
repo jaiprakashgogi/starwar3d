@@ -1,5 +1,8 @@
 package org.gearvrf.starwar;
 
+import android.media.Image;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.gearvrf.GVRAndroidResource;
@@ -9,6 +12,7 @@ import org.gearvrf.GVRScript;
 import org.gearvrf.GVRTexture;
 import org.gearvrf.starwar.GamepadInput.GamepadListener;
 import org.gearvrf.GVRRenderData.GVRRenderingOrder;
+import org.gearvrf.scene_objects.GVRCameraSceneObject;
 import org.gearvrf.utility.Log;
 
 public class PlanesManager extends GVRScript implements PositionListener {
@@ -21,6 +25,7 @@ public class PlanesManager extends GVRScript implements PositionListener {
 	private int count = 20;
 	Score mScore;
 	GVRContext mGVRContext;
+	private SampleActivity mActivity;
 
 	public PlanesManager(SampleActivity activity) {
 		mActivity = activity;
@@ -28,10 +33,10 @@ public class PlanesManager extends GVRScript implements PositionListener {
 	}
 
 	@Override
-	public void onInit(GVRContext _GVRContext) throws Throwable {
+	public void onInit(GVRContext gvrContext) throws Throwable {
 		// TODO Auto-generated method stub
 		// Add plane objects
-		mGVRContext = _GVRContext;
+		mGVRContext = gvrContext;
 		mScore = new Score(this);
 		planeArray = new ArrayList<Planes>();
 		for (int i = 0; i < count; i++) {
@@ -40,13 +45,19 @@ public class PlanesManager extends GVRScript implements PositionListener {
 			planeArray.add(myPlane);
 		}
 
-		GVRTexture texture = _GVRContext.loadTexture(new GVRAndroidResource(mGVRContext, R.drawable.pointer));
-		GVRSceneObject pointer = new GVRSceneObject(_GVRContext, 4.0f, 2.0f, texture);
+		GVRTexture texture = gvrContext.loadTexture(new GVRAndroidResource(mGVRContext, R.drawable.pointer));
+		GVRSceneObject pointer = new GVRSceneObject(gvrContext, 4.0f, 2.0f, texture);
 		pointer.getTransform().setPosition(0, 0, -1f);
 		pointer.getTransform().setScale(0.2f, 0.2f, 0.2f);
 		pointer.getRenderData().setDepthTest(false);
 		pointer.getRenderData().setRenderingOrder(GVRRenderingOrder.OVERLAY);
-		_GVRContext.getMainScene().getMainCameraRig().addChildObject(pointer);
+		gvrContext.getMainScene().getMainCameraRig().addChildObject(pointer);
+		
+		GVRCameraSceneObject cameraObject = new GVRCameraSceneObject(
+                gvrContext, 3.6f, 2.0f, mActivity.getCamera());
+		cameraObject.setUpCameraForVrMode(1); 
+		cameraObject.getTransform().setPosition(0.0f, 0.0f, -4.0f);
+		gvrContext.getMainScene().getMainCameraRig().addChildObject(cameraObject);
 
 	}
 
@@ -94,22 +105,4 @@ public class PlanesManager extends GVRScript implements PositionListener {
 			throwable.printStackTrace();
 		}
 	}
-	
-	private GamepadListener mGamepadListener = new GamepadListener() {
-		@Override
-		public void onAxisData(int axisID, float x, float y) {
-			Log.d(TAG, "AxisData %f %f", x, y);
-		}
-
-		@Override
-		public boolean onButtonUp(int keycode) {
-			return false;
-		}
-
-		@Override
-		public boolean onButtonDown(int keycode) {
-			return false;
-		}
-	};
-
 }

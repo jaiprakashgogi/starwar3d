@@ -32,7 +32,7 @@ public class Planes extends GVRSceneObject implements GVRDrawFrameListener {
 		_gvrContext.registerDrawFrameListener(this);
 		curr_position = new double[3];
 		velocity = new double[3];
-		scale = 1.f;
+		scale = 0.01f;
 		isVisible = true;
 		// choosing a random position
 		UniformHemisphereSampler();
@@ -51,7 +51,7 @@ public class Planes extends GVRSceneObject implements GVRDrawFrameListener {
 				_gvrContext.loadTexture(new GVRAndroidResource(_gvrContext
                         .getContext(), "tex" + new Random().nextInt(9) + 1 + ".jpg")));*/
 		this(_gvrContext, _gvrContext.loadMesh(
-				new GVRAndroidResource(_gvrContext.getContext(), "obj1.obj")), 
+				new GVRAndroidResource(_gvrContext.getContext(), "obj" + new Random().nextInt(4) + ".obj")), 
 				_gvrContext.loadTexture(new GVRAndroidResource(_gvrContext
                         .getContext(), "tex1.jpg")));
 		this.id = _id;
@@ -97,7 +97,7 @@ public class Planes extends GVRSceneObject implements GVRDrawFrameListener {
 		double ys = - Math.sin(theta) * Math.sin(phi);
 		double zs = - Math.cos(theta);
 		double dist = myRandom() / 2.0 + 9.0;
-		scale = (float) (myRandom() / 2.0 + 0.5);
+		//scale = (float) (myRandom() / 2.0 + 0.5);
 		
 		curr_position[0] = dist * xs;
 		curr_position[1] = dist * ys;

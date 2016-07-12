@@ -42,9 +42,6 @@ public class SampleMain extends GVRScript {
 
     private SampleActivity mActivity;
 
-    // Game
-    GameCore mGameCore;
-
 	private GamepadListener mGamepadListener = new GamepadListener() {
 		@Override
 		public void onAxisData(int axisID, float x, float y) {
@@ -65,8 +62,6 @@ public class SampleMain extends GVRScript {
     SampleMain(SampleActivity activity) {
         mActivity = activity;
         mActivity.mGamepad.setGamepadXYListener(mGamepadListener);
-
-        mGameCore = new GameCore();
     }
 
     @Override

@@ -21,7 +21,9 @@ public class Planes extends GVRSceneObject implements GVRDrawFrameListener {
 	private float scale;
 	private boolean isVisible;
 	private GVRScene scene;
+	private int id;
 	public static final String TAG = "Planes";
+	private PositionListener mPositionListener;
 
 	public Planes(GVRContext _gvrContext, GVRMesh _mesh, GVRTexture texture) {
 		super(_gvrContext, _mesh, texture);
@@ -35,10 +37,14 @@ public class Planes extends GVRSceneObject implements GVRDrawFrameListener {
 		// choosing a random position
 		UniformHemisphereSampler();
 		scene.addSceneObject(this);
-		Log.i(TAG, "Constructor 2");
+		//Log.i(TAG, "Constructor 2");
 	}
 
-	public Planes(GVRContext _gvrContext) throws IOException {
+	public void setPositionListener(PositionListener _PositionListener) {
+		mPositionListener = _PositionListener;
+	}
+
+	public Planes(GVRContext _gvrContext, int _id) throws IOException {
 		//choose a random mesh
 		/*super(_gvrContext, _gvrContext.loadMesh(
 				new GVRAndroidResource(_gvrContext.getContext(), "obj" + new Random().nextInt(9) + 1 + ".obj")), 
@@ -48,7 +54,8 @@ public class Planes extends GVRSceneObject implements GVRDrawFrameListener {
 				new GVRAndroidResource(_gvrContext.getContext(), "obj1.obj")), 
 				_gvrContext.loadTexture(new GVRAndroidResource(_gvrContext
                         .getContext(), "tex1.jpg")));
-		Log.i(TAG, "Constructor 1");
+		this.id = _id;
+		//Log.i(TAG, "Constructor 1");
 
 	}
 
@@ -62,7 +69,9 @@ public class Planes extends GVRSceneObject implements GVRDrawFrameListener {
 			getTransform().setPosition((float) curr_position[0], (float) curr_position[1], (float) curr_position[2]);
 			if( Math.sqrt(curr_position[0] * curr_position[0] + curr_position[1] * curr_position[1] + curr_position[2] *curr_position[2]) < 0.10){
 				isVisible = false;
+				mPositionListener.onPlaneHit(id);
 			}
+			mPositionListener.onPositionChange(id, curr_position);
 		}
 		
 		if(!isVisible) {
@@ -102,5 +111,10 @@ public class Planes extends GVRSceneObject implements GVRDrawFrameListener {
 		velocity[1] = -ys;
 		velocity[2] = -zs;
 
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
 	}
 }

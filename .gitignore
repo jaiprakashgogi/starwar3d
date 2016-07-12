@@ -43,3 +43,4 @@ gvr-starwar/app/src/main/assets/oculussig*
 
 # temporarily ignore this
 gvr-starwar/app/src/main/project.properties
+.*

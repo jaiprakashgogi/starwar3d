@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 import org.gearvrf.GVRAndroidResource;
 import org.gearvrf.GVRContext;
-import org.gearvrf.GVRRenderData.GVRRenderingOrder;
 import org.gearvrf.GVRSceneObject;
 import org.gearvrf.GVRScript;
 import org.gearvrf.GVRTexture;
-import org.gearvrf.scene_objects.GVRCameraSceneObject;
 import org.gearvrf.starwar.GamepadInput.GamepadListener;
+import org.gearvrf.GVRRenderData.GVRRenderingOrder;
+import org.gearvrf.scene_objects.GVRCameraSceneObject;
 import org.gearvrf.utility.Log;
 
 public class PlanesManager extends GVRScript implements PositionListener {
@@ -22,6 +22,12 @@ public class PlanesManager extends GVRScript implements PositionListener {
 	private int count = 20;
 	Score mScore;
 	GVRContext mGVRContext;
+	private SampleActivity mActivity;
+
+	public PlanesManager(SampleActivity sampleActivity) {
+		// TODO Auto-generated constructor stub
+		mActivity = sampleActivity;
+	}
 
 	public PlanesManager(SampleActivity activity) {
 		mActivity = activity;
@@ -101,27 +107,30 @@ public class PlanesManager extends GVRScript implements PositionListener {
 			throwable.printStackTrace();
 		}
 	}
+<<<<<<< HEAD
 	
 	private GamepadListener mGamepadListener = new GamepadListener() {
-        @Override
-        public void onAxisData(int axisID, float x, float y) {
-                Log.d(TAG, "AxisData %f %f", x, y);
-        }
+		@Override
+		public void onAxisData(int axisID, float x, float y) {
+			Log.d(TAG, "AxisData %f %f", x, y);
+		}
 
-        @Override
-        public boolean onButtonUp(int keycode) {
-                return false;
-        }
+		@Override
+		public boolean onButtonUp(int keycode) {
+			return false;
+		}
 
-        @Override
-        public boolean onButtonDown(int keycode) {
-                return false;
-        }
+		@Override
+		public boolean onButtonDown(int keycode) {
+			return false;
+		}
 	};
+
+=======
 
 	public void onPause() {
 		// TODO Auto-generated method stub
 		
 	}
-
+>>>>>>> Adding passthrough camera
 }

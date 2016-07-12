@@ -1,8 +1,5 @@
 package org.gearvrf.starwar;
 
-import android.media.Image;
-
-import java.io.IOException;
 import java.util.ArrayList;
 
 import org.gearvrf.GVRAndroidResource;
@@ -17,10 +14,17 @@ public class PlanesManager extends GVRScript implements PositionListener {
 
 	private static final String TAG = "PlanesManager";
 
+	private SampleActivity mActivity;
+
 	ArrayList<Planes> planeArray;
 	private int count = 20;
 	Score mScore;
 	GVRContext mGVRContext;
+
+	public PlanesManager(SampleActivity activity) {
+		mActivity = activity;
+		mActivity.mGamepad.setGamepadXYListener(mGamepadListener);
+	}
 
 	@Override
 	public void onInit(GVRContext _GVRContext) throws Throwable {
@@ -89,4 +93,22 @@ public class PlanesManager extends GVRScript implements PositionListener {
 			throwable.printStackTrace();
 		}
 	}
+	
+	private GamepadListener mGamepadListener = new GamepadListener() {
+		@Override
+		public void onAxisData(int axisID, float x, float y) {
+			Log.d(TAG, "AxisData %f %f", x, y);
+		}
+
+		@Override
+		public boolean onButtonUp(int keycode) {
+			return false;
+		}
+
+		@Override
+		public boolean onButtonDown(int keycode) {
+			return false;
+		}
+	};
+
 }

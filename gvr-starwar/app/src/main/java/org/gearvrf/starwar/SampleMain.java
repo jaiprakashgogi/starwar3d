@@ -20,11 +20,12 @@ import java.util.List;
 
 import org.gearvrf.*;
 import org.gearvrf.GVRPicker.GVRPickedObject;
+import org.gearvrf.starwar.GamepadInput.GamepadListener;
 import org.gearvrf.utility.Log;
 
 public class SampleMain extends GVRScript {
 
-    private static final String TAG = "SampleMain";
+    private static final String TAG = Log.tag(SampleMain.class);
 
     private static final float UNPICKED_COLOR_R = 0.7f;
     private static final float UNPICKED_COLOR_G = 0.7f;
@@ -39,10 +40,33 @@ public class SampleMain extends GVRScript {
     private ColorShader mColorShader = null;
     private List<GVRSceneObject> mObjects = new ArrayList<GVRSceneObject>();
 
-    private GVRActivity mActivity;
+    private SampleActivity mActivity;
 
-    SampleMain(GVRActivity activity) {
+    // Game
+    GameCore mGameCore;
+
+	private GamepadListener mGamepadListener = new GamepadListener() {
+		@Override
+		public void onAxisData(int axisID, float x, float y) {
+			Log.d(TAG, "AxisData %f %f", x, y);
+		}
+
+		@Override
+		public boolean onButtonUp(int keycode) {
+			return false;
+		}
+
+		@Override
+		public boolean onButtonDown(int keycode) {
+			return false;
+		}
+	};
+
+    SampleMain(SampleActivity activity) {
         mActivity = activity;
+        mActivity.mGamepad.setGamepadXYListener(mGamepadListener);
+
+        mGameCore = new GameCore();
     }
 
     @Override

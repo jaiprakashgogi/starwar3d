@@ -17,14 +17,40 @@
 package org.gearvrf.starwar;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 
 import org.gearvrf.GVRActivity;
 
 public class SampleActivity extends GVRActivity {
-	
+	protected GamepadInput mGamepad;
+
+	public SampleActivity() {
+		mGamepad = new GamepadInput();
+	}
+
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        setScript(new PlanesManager(), "gvr.xml");
+        setScript(new PlanesManager(this), "gvr.xml");
+    }
+
+    @Override
+	public boolean dispatchGenericMotionEvent(MotionEvent event) {
+    	boolean processed = mGamepad.onGenericMotionEvent(event);
+    	if (processed)
+    		return true;
+
+		return super.dispatchGenericMotionEvent(event);
+	}
+
+	@Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+		boolean processed = mGamepad.onKeyEvent(event);
+		if (processed) {
+			return true;
+		}
+
+        return super.dispatchKeyEvent(event);
     }
 }

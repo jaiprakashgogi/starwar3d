@@ -12,7 +12,6 @@ import org.gearvrf.GVRSceneObject;
 import org.gearvrf.GVRSphereCollider;
 import org.gearvrf.GVRTexture;
 import org.joml.Vector3d;
-import org.joml.Vector3f;
 
 import android.util.Log;
 

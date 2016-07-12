@@ -119,7 +119,7 @@ public class PlanesManager extends GVRScript implements PositionListener {
 	public void onStep() {
 		mPlayer.onStep();
 		Vector3f playerPos = mPlayer.getPosition();
-		
+
 		for (Planes p : planeArray) {
 			p.updateTargetPosition(playerPos.x, playerPos.y, playerPos.z);
 		}
@@ -191,6 +191,7 @@ public class PlanesManager extends GVRScript implements PositionListener {
 				break;
 
 			case KeyEvent.KEYCODE_BUTTON_Y:
+				mPlayer.resetPos();
 				break;
 
 			default:

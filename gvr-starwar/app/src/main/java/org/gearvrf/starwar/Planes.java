@@ -11,6 +11,8 @@ import org.gearvrf.GVRScene;
 import org.gearvrf.GVRSceneObject;
 import org.gearvrf.GVRSphereCollider;
 import org.gearvrf.GVRTexture;
+import org.joml.Vector3d;
+import org.joml.Vector3f;
 
 import android.util.Log;
 
@@ -25,6 +27,10 @@ public class Planes extends GVRSceneObject implements GVRDrawFrameListener {
 	public int id;
 	public static final String TAG = "Planes";
 	private PositionListener mPositionListener;
+
+	// Target tracking
+	Vector3d target = new Vector3d();
+	Vector3d mVelocity = new Vector3d();
 
 	public Planes(GVRContext _gvrContext, GVRMesh _mesh, GVRTexture texture) {
 		super(_gvrContext, _mesh, texture);
@@ -65,9 +71,12 @@ public class Planes extends GVRSceneObject implements GVRDrawFrameListener {
 	public void onDrawFrame(float arg0) {
 		// TODO Auto-generated method stub
 		if (isVisible) {
-			curr_position[0] = curr_position[0] + velocity[0] * 0.01;
-			curr_position[1] = curr_position[1] + velocity[1] * 0.01;
-			curr_position[2] = curr_position[2] + velocity[2] * 0.01;
+			updateVelocity();
+
+			curr_position[0] = curr_position[0] + velocity[0] * 0.01f;
+			curr_position[1] = curr_position[1] + velocity[1] * 0.01f;
+			curr_position[2] = curr_position[2] + velocity[2] * 0.01f;
+
 			getTransform().setPosition((float) curr_position[0], (float) curr_position[1], (float) curr_position[2]);
 			if( Math.sqrt(curr_position[0] * curr_position[0] + curr_position[1] * curr_position[1] + curr_position[2] *curr_position[2]) < 0.10){
 				isVisible = false;
@@ -86,6 +95,35 @@ public class Planes extends GVRSceneObject implements GVRDrawFrameListener {
 		Random rn = new Random();
 		double answer = (double) (rn.nextInt(MAX) + 1);
 		return answer / MAX;
+	}
+
+	void updateVelocity() {
+		mVelocity.x = velocity[0];
+		mVelocity.y = velocity[1];
+		mVelocity.z = velocity[2];
+
+		double speed = mVelocity.length();
+
+		mVelocity.normalize();
+
+		// Apply accel
+		Vector3d direction = new Vector3d(target);
+		direction.sub(curr_position[0], curr_position[1], curr_position[2]);
+		direction.normalize();
+
+		double lr = .01;
+		direction.mul(lr);
+
+		Vector3d targetVel = new Vector3d(mVelocity);
+		targetVel.mul(1 - lr);
+
+		mVelocity.add(direction);
+		mVelocity.normalize();
+		mVelocity.mul(speed);
+		
+		velocity[0] = mVelocity.x;
+		velocity[1] = mVelocity.y;
+		velocity[2] = mVelocity.z;
 	}
 
 	void UniformHemisphereSampler() {
@@ -112,7 +150,6 @@ public class Planes extends GVRSceneObject implements GVRDrawFrameListener {
 		velocity[0] = -xs;
 		velocity[1] = -ys;
 		velocity[2] = -zs;
-
 	}
 
 	@Override
@@ -124,7 +161,9 @@ public class Planes extends GVRSceneObject implements GVRDrawFrameListener {
 		isVisible = _isVisible;
 	}
 
-	void updateTargetPosition(double x, double y, double z) {
-		
+	void updateTargetPosition(float x, float y, float z) {
+		target.x = x;
+		target.y = y;
+		target.z = z;
 	}
 }

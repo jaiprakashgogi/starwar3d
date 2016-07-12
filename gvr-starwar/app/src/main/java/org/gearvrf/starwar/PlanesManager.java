@@ -19,6 +19,7 @@ import org.joml.Vector3f;
 import org.gearvrf.GVRPicker;
 
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 public class PlanesManager extends GVRScript implements PositionListener {
@@ -118,6 +119,11 @@ public class PlanesManager extends GVRScript implements PositionListener {
 	public void onStep() {
 		mPlayer.onStep();
 		Vector3f playerPos = mPlayer.getPosition();
+		
+		for (Planes p : planeArray) {
+			p.updateTargetPosition(playerPos.x, playerPos.y, playerPos.z);
+		}
+
 		updateCameraPos(playerPos);
 		scorecard.setText("Hit: " + mScore.getPlaneHit() + " Shoot: " + mScore.getPlaneShot());
 	}
@@ -173,6 +179,23 @@ public class PlanesManager extends GVRScript implements PositionListener {
 
 		@Override
 		public boolean onButtonDown(int keycode) {
+			switch (keycode) {
+			case KeyEvent.KEYCODE_BUTTON_A:
+				shoot();
+				break;
+
+			case KeyEvent.KEYCODE_BUTTON_B:
+				break;
+
+			case KeyEvent.KEYCODE_BUTTON_X:
+				break;
+
+			case KeyEvent.KEYCODE_BUTTON_Y:
+				break;
+
+			default:
+				break;
+			}
 			return false;
 		}
 	};
@@ -181,14 +204,18 @@ public class PlanesManager extends GVRScript implements PositionListener {
 		// TODO Auto-generated method stub
 	}
 
+	private void shoot() {
+		// Log.e("DDD", "ACTION_DOWN");
+		if (mPickedObject != null) {
+			mScene.removeSceneObject(mPickedObject);
+			onPlaneShot(mPickedObject.id);
+		}
+	}
+
 	public void onTouchEvent(MotionEvent event) {
 		switch (event.getAction() & MotionEvent.ACTION_MASK) {
 		case MotionEvent.ACTION_DOWN:
-			// Log.e("DDD", "ACTION_DOWN");
-			if (mPickedObject != null) {
-				mScene.removeSceneObject(mPickedObject);
-				onPlaneShot(mPickedObject.id);
-			}
+			shoot();
 			break;
 		case MotionEvent.ACTION_CANCEL:
 		case MotionEvent.ACTION_UP:

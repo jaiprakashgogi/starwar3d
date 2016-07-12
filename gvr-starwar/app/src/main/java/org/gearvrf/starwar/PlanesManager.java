@@ -33,7 +33,7 @@ public class PlanesManager extends GVRScript implements PositionListener {
 	private SampleActivity mActivity;
 
 	ArrayList<Planes> planeArray;
-	private int count = 5;
+	private int count = 10;
 	Score mScore;
 	GVRContext mGVRContext;
 
